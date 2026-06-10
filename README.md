@@ -59,6 +59,18 @@ systemctl --user restart hermes-gateway
 
 Подробнее: [docs/QUICKSTART.md](docs/QUICKSTART.md).
 
+### Откат / удаление
+
+```bash
+bash scripts/uninstall_plugin.sh
+```
+
+Скрипт удаляет только `~/.hermes/plugins/max` (спросит подтверждение). Ваши `.env`, `profiles/` и `state/` сохраняются. После удаления перезапустите gateway:
+
+```bash
+systemctl --user restart hermes-gateway
+```
+
 ## Архитектура
 
 ```mermaid
