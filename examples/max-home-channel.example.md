@@ -1,25 +1,25 @@
-# MAX Home Channel Example
+# Пример: домашний канал MAX
 
-This file shows how to configure MAX as a delivery target for cron tasks.
+Этот файл показывает, как настроить MAX как цель доставки для cron-задач.
 
-## Configuration
+## Настройка
 
-In `~/.hermes/.env`:
+В `~/.hermes/.env`:
 
 ```env
 MAX_HOME_CHANNEL=user:YOUR_MAX_USER_ID
 ```
 
-## Usage
+## Использование
 
-When creating a cron job, you can set delivery to the MAX home channel:
+При создании cron-задачи можно указать доставку в домашний канал MAX:
 
 ```bash
 hermes cron create --deliver max --prompt "Daily AI news digest" --schedule "0 9 * * *"
 ```
 
-## Important
+## Важно
 
-- MAX cron delivery is opt-in, not automatic
-- Telegram cron tasks do NOT auto-route to MAX
-- See [docs/CRON_AND_TELEGRAM_ISOLATION.md](../docs/CRON_AND_TELEGRAM_ISOLATION.md)
+- Доставка cron в MAX включается явно, она не автоматическая
+- Cron-задачи Telegram НЕ перенаправляются в MAX автоматически
+- См. [docs/CRON_AND_TELEGRAM_ISOLATION.md](../docs/CRON_AND_TELEGRAM_ISOLATION.md)

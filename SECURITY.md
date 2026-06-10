@@ -1,5 +1,7 @@
 # Security Policy
 
+> **Кратко по-русски:** об уязвимостях сообщайте приватно, не через публичные issue. Реальные токены и пароли никогда не коммитьте — храните их только локально в `~/.hermes/.env`, в репозитории остаётся шаблон `.env.example`. Перед каждым коммитом запускайте `bash scripts/check_secrets.sh`. В продакшене обязателен allowlist (`MAX_ALLOWED_USERS`), а `MAX_ALLOW_ALL_USERS` должен быть выключен.
+
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability, please report it privately.

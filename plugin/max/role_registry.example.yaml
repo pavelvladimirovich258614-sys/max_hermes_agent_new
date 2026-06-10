@@ -1,6 +1,6 @@
 # MAX Role Registry — F-NEXT-03
-# Maps /command → profile for adapter-level role routing.
-# Only roles with enabled:true are active.
+# Сопоставляет /command → profile для ролевой маршрутизации на уровне adapter.
+# Активны только роли с enabled:true.
 
 roles:
   copy:
@@ -18,8 +18,8 @@ roles:
       - search
     description: "Тексты, посты, сценарии, лендинги"
 
-  # Future roles — NOT active yet (enabled: false).
-  # Enable one at a time after /copy is stable.
+  # Будущие роли — пока НЕ активны (enabled: false).
+  # Включайте по одной после того, как /copy стабильно работает.
 
   dev:
     enabled: true

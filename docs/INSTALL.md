@@ -1,37 +1,37 @@
-# Installation Guide
+# Руководство по установке
 
-## Prerequisites
+## Требования
 
-- [Hermes Agent](https://hermes-agent.nousresearch.com/docs) installed and working
+- Установленный и работающий [Hermes Agent](https://hermes-agent.nousresearch.com/docs)
 - Python 3.11+
-- A MAX bot token (see [MAX_BOT_SETUP.md](MAX_BOT_SETUP.md))
+- Токен бота MAX (см. [MAX_BOT_SETUP.md](MAX_BOT_SETUP.md))
 
 ---
 
-## Option A — Existing Hermes Install (Recommended)
+## Вариант A — установка в существующий Hermes (рекомендуется)
 
-### 1. Clone the repository
+### 1. Склонируйте репозиторий
 
 ```bash
 git clone https://github.com/pavelvladimirovich258614-sys/max_hermes_agent_new.git
 cd max_hermes_agent_new
 ```
 
-### 2. Run the install script
+### 2. Запустите скрипт установки
 
 ```bash
 bash scripts/install_plugin.sh
 ```
 
-This copies plugin files to `~/.hermes/plugins/max/` without touching your existing config.
+Скрипт копирует файлы plugin в `~/.hermes/plugins/max/`, не трогая вашу существующую конфигурацию.
 
-### 3. Configure environment
+### 3. Настройте окружение
 
 ```bash
 cp .env.example ~/.hermes/.env.max.example
 ```
 
-Edit your `~/.hermes/.env` and add:
+Отредактируйте свой `~/.hermes/.env` и добавьте:
 
 ```env
 MAX_BOT_TOKEN=your_real_token_here
@@ -40,30 +40,30 @@ MAX_PROGRESS_APPEND=1
 MAX_POLLING_TIMEOUT=30
 ```
 
-### 4. Verify token
+### 4. Проверьте токен
 
 ```bash
 python3 scripts/verify_max_token.py
 ```
 
-This calls MAX Bot API `/me` endpoint and prints bot info (never the token itself).
+Скрипт вызывает endpoint `/me` MAX Bot API и выводит информацию о боте (сам токен никогда не печатается).
 
-### 5. Restart gateway
+### 5. Перезапустите gateway
 
 ```bash
 systemctl --user restart hermes-gateway
-# or: hermes gateway restart
+# или: hermes gateway restart
 ```
 
-### 6. Test from MAX
+### 6. Проверьте из MAX
 
-Open MAX, find your bot, and send:
+Откройте MAX, найдите своего бота и отправьте:
 
 ```
 /status
 ```
 
-Then try a role route:
+Затем попробуйте ролевой маршрут:
 
 ```
 /dev скажи коротко, ты работаешь?
@@ -71,75 +71,75 @@ Then try a role route:
 
 ---
 
-## Option B — Manual Install
+## Вариант B — ручная установка
 
-1. Copy `plugin/max/` to `~/.hermes/plugins/max/`:
+1. Скопируйте `plugin/max/` в `~/.hermes/plugins/max/`:
 
 ```bash
 cp -r plugin/max ~/.hermes/plugins/max
 ```
 
-2. Copy example profiles (optional):
+2. Скопируйте примеры профилей (опционально):
 
 ```bash
 cp -r examples/profiles ~/.hermes/profiles
 ```
 
-3. Copy example role registry (optional, creates example roles):
+3. Скопируйте пример реестра ролей (опционально, создаёт примеры ролей):
 
 ```bash
 cp examples/role_registry.yaml ~/.hermes/plugins/max/role_registry.yaml
 ```
 
-4. Edit `~/.hermes/.env` with your real token and user ID.
+4. Отредактируйте `~/.hermes/.env`, указав свой реальный токен и user ID.
 
-5. Restart gateway.
+5. Перезапустите gateway.
 
-**Important:** Never copy real `.env` files. Never copy logs, state, sessions, or backups.
-
----
-
-## Option C — Docker (Experimental)
-
-See [DOCKER.md](DOCKER.md).
-
-Limitations:
-- Docker mode provides plugin files only
-- Hermes Gateway itself runs on the host
-- Secrets must be mounted at runtime, not baked into the image
-- For production, use native install
+**Важно:** никогда не копируйте реальные файлы `.env`. Никогда не копируйте логи, состояние, сессии и бэкапы.
 
 ---
 
-## Option D — Development Mode
+## Вариант C — Docker (экспериментально)
+
+См. [DOCKER.md](DOCKER.md).
+
+Ограничения:
+- Docker-режим предоставляет только файлы plugin
+- Сам Hermes Gateway работает на хосте
+- Секреты должны монтироваться во время запуска, а не зашиваться в образ
+- Для продакшена используйте нативную установку
+
+---
+
+## Вариант D — режим разработки
 
 ```bash
-# Clone and enter repo
+# Склонировать репозиторий и перейти в него
 git clone https://github.com/pavelvladimirovich258614-sys/max_hermes_agent_new.git
 cd max_hermes_agent_new
 
-# Create venv
+# Создать venv
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Run tests (no real token needed)
+# Запустить тесты (реальный токен не нужен)
 cd plugin/max
 python3 -m unittest tests.test_adapter -v
 
-# Run smoke checks
+# Запустить smoke-проверки
 bash ../../scripts/smoke_test.sh
 ```
 
 ---
 
-## Verify Installation
+## Проверка установки
 
 ```bash
 bash scripts/doctor.sh
 ```
 
-This checks:
-- Plugin files exist
-- No real secrets in repo files
-- Tests pass
-- Gateway is running (if applicable)
+Скрипт проверяет:
+- Файлы plugin на месте
+- В файлах репозитория нет реальных секретов
+- Тесты проходят
+- Gateway запущен (если применимо)

@@ -1,5 +1,7 @@
 # Disclaimer
 
+> **Кратко по-русски:** это интеграция, поддерживаемая сообществом, а не официальный продукт MAX (VK) или Nous Research. Вы сами отвечаете за токен бота, безопасность сервера и контроль доступа. Инструменты (terminal, browser, write_file) могут выполнять команды на вашем сервере — ограничивайте их конфигурацией Hermes. ПО предоставляется «как есть», без гарантий.
+
 ## Community Integration
 
 This is a **community-maintained integration** between MAX Messenger and Hermes Agent.

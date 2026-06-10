@@ -1,105 +1,105 @@
-# Team Add — Create Agents from MAX
+# Team Add — создание агентов из MAX
 
-The team management system lets you create, preview, confirm, and rollback agent profiles directly from MAX chat.
+Система управления командой позволяет создавать, просматривать превью, подтверждать и откатывать профили агентов прямо из чата MAX.
 
-## Workflow
+## Рабочий процесс
 
 ```mermaid
 flowchart TD
-    A[/team-add] --> B[Validate 13 checks]
-    B --> C[Create Pending State]
-    C --> D[Show Preview]
-    D --> E{User decides}
-    E -->|/team-confirm id| F[Create Profile Files]
-    F --> G[Update Registry]
-    G --> H[Restart Gateway]
-    H --> I[New route works]
-    E -->|/team-cancel id| J[Delete Pending]
-    I -->|/team-rollback name| K[Remove Profile + Registry]
-    K --> L[Restart Gateway]
+    A[/team-add] --> B[Валидация: 13 проверок]
+    B --> C[Создание pending-состояния]
+    C --> D[Показ превью]
+    D --> E{Решение пользователя}
+    E -->|/team-confirm id| F[Создание файлов профиля]
+    F --> G[Обновление реестра]
+    G --> H[Перезапуск gateway]
+    H --> I[Новый маршрут работает]
+    E -->|/team-cancel id| J[Удаление pending]
+    I -->|/team-rollback name| K[Удаление профиля и записи в реестре]
+    K --> L[Перезапуск gateway]
 ```
 
-## Step 1: Preview (/team-add)
+## Шаг 1: Превью (/team-add)
 
 ```text
 /team-add name=designer route=/design title="Дизайнер" SOUL:Ты дизайнер визуалов, аватаров, баннеров и промо-картинок. Работаешь кратко, структурно, задаёшь 1 уточняющий вопрос только если без него нельзя. Даёшь промпты для изображений, ТЗ дизайнеру и чеклист качества. Не читаешь секреты, не просишь токены, не меняешь файлы без подтверждения.
 ```
 
-**What happens:**
-- 13 validations run (see below)
-- Pending state created with 10-minute TTL
-- Preview displayed (name, route, title, soul_len, soul_hash, pending ID)
-- **No files created yet**
+**Что происходит:**
+- Выполняются 13 проверок (см. ниже)
+- Создаётся pending-состояние с TTL 10 минут
+- Показывается превью (name, route, title, soul_len, soul_hash, pending ID)
+- **Файлы пока НЕ создаются**
 
-**Parameters:**
-- `name` — Agent identifier: `[a-z0-9_-]{2,32}`
-- `route` — Slash command: `/[a-z0-9_-]{2,32}`
-- `title` — Display name: 1-64 characters
-- `SOUL:` — Agent instructions: 100-12000 characters
+**Параметры:**
+- `name` — идентификатор агента: `[a-z0-9_-]{2,32}`
+- `route` — slash-команда: `/[a-z0-9_-]{2,32}`
+- `title` — отображаемое имя: 1–64 символа
+- `SOUL:` — инструкции агента: 100–12000 символов
 
-## Step 2: Confirm (/team-confirm)
+## Шаг 2: Подтверждение (/team-confirm)
 
 ```text
 /team-confirm ta_20250610_140535_d90b27
 ```
 
-**What happens:**
-- Re-validates all checks
-- Creates `~/.hermes/profiles/<name>/SOUL.md`
-- Creates `~/.hermes/profiles/<name>/config.yaml` (minimal)
-- Appends entry to `role_registry.yaml`
-- Creates backup of registry
-- Marks pending as confirmed
+**Что происходит:**
+- Все проверки выполняются повторно
+- Создаётся `~/.hermes/profiles/<name>/SOUL.md`
+- Создаётся `~/.hermes/profiles/<name>/config.yaml` (минимальный)
+- В `role_registry.yaml` добавляется запись
+- Создаётся резервная копия реестра
+- Pending помечается как подтверждённый
 
-**⚠️ Requires gateway restart.**
+**⚠️ Требуется перезапуск gateway.**
 
-## Step 3: Test
+## Шаг 3: Проверка
 
 ```text
 /design Сделай промпт для яркого аватара AI-агента
 ```
 
-## Step 4: Rollback (optional)
+## Шаг 4: Откат (по желанию)
 
 ```text
 /team-rollback designer
 ```
 
-**What happens:**
-- Creates backup of registry
-- Removes profile directory
-- Removes registry entry
-- Cleans up any pending state
+**Что происходит:**
+- Создаётся резервная копия реестра
+- Удаляется директория профиля
+- Удаляется запись из реестра
+- Очищается связанное pending-состояние
 
-**⚠️ Requires gateway restart.**
+**⚠️ Требуется перезапуск gateway.**
 
-## 13 Validations
+## 13 проверок
 
-1. User is in allowlist
-2. Name matches regex `[a-z0-9_-]{2,32}`
-3. Route matches regex `/[a-z0-9_-]{2,32}`
-4. Title length 1-64 chars
-5. SOUL length 100-12000 chars
-6. Route is not a system command (`/status`, `/model`, etc.)
-7. Route is not already registered
-8. Name/profile does not already exist
-9. SOUL does not contain secret patterns (ghp_, sk-, BOT_TOKEN)
-10. SOUL does not contain security bypass patterns
-11. Pending ID exists and not expired
-12. Only creator can confirm
-13. Route and name still available at confirm time
+1. Пользователь есть в allowlist
+2. Имя соответствует regex `[a-z0-9_-]{2,32}`
+3. Маршрут соответствует regex `/[a-z0-9_-]{2,32}`
+4. Длина title — 1–64 символа
+5. Длина SOUL — 100–12000 символов
+6. Маршрут не является системной командой (`/status`, `/model` и т.д.)
+7. Маршрут ещё не зарегистрирован
+8. Имя/профиль ещё не существует
+9. SOUL не содержит паттернов секретов (ghp_, sk-, BOT_TOKEN)
+10. SOUL не содержит паттернов обхода безопасности
+11. Pending ID существует и не истёк
+12. Подтвердить может только создатель
+13. Маршрут и имя всё ещё свободны на момент подтверждения
 
-## Backup and Safety
+## Резервные копии и безопасность
 
-- Registry is backed up before every mutation (confirm and rollback)
-- Backups stored in `~/.hermes/state/team_add_backups/`
-- Profile files use mode 600
-- Pending state has 10-minute TTL
-- All writes are atomic (write to .tmp, then rename)
+- Реестр бэкапится перед каждым изменением (confirm и rollback)
+- Бэкапы хранятся в `~/.hermes/state/team_add_backups/`
+- Файлы профилей создаются с правами 600
+- Pending-состояние живёт 10 минут (TTL)
+- Все записи атомарны (запись в .tmp, затем rename)
 
-## Security
+## Безопасность
 
-- Only allowlisted users can use team commands
-- SOUL content is scanned for secrets
-- System routes cannot be overridden
-- Confirm requires the same user who created the pending
+- Команды управления командой доступны только пользователям из allowlist
+- Содержимое SOUL сканируется на секреты
+- Системные маршруты нельзя перекрыть
+- Подтвердить может только тот пользователь, который создал pending

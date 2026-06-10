@@ -1,39 +1,39 @@
-# Security Checklist
+# Чек-лист безопасности
 
-## Before Every Commit
+## Перед каждым коммитом
 
-- [ ] Run `bash scripts/check_secrets.sh` — must pass clean
-- [ ] No real tokens in any file
-- [ ] No real user IDs in any file
-- [ ] `.env` is in `.gitignore` and not tracked
-- [ ] No log files committed
-- [ ] No state/session/backup files committed
+- [ ] Запустить `bash scripts/check_secrets.sh` — должен пройти без ошибок
+- [ ] Ни в одном файле нет реальных токенов
+- [ ] Ни в одном файле нет реальных user ID
+- [ ] `.env` указан в `.gitignore` и не отслеживается git
+- [ ] Не закоммичены лог-файлы
+- [ ] Не закоммичены файлы состояния, сессий и бэкапов
 
-## Production Setup
+## Настройка для продакшена
 
-- [ ] `MAX_ALLOWED_USERS` set to specific user IDs (not empty, not allow-all)
-- [ ] `MAX_ALLOW_ALL_USERS=0` (or not set)
-- [ ] `MAX_BOT_TOKEN` stored only in `~/.hermes/.env` with mode 600
-- [ ] Gateway runs under systemd with user-level isolation
-- [ ] Pending files use mode 600
-- [ ] Registry backups are stored in a secure directory
-- [ ] SOUL.md files do not contain secrets or API keys
-- [ ] Route validation prevents system command override
-- [ ] Rollback is tested and available
+- [ ] В `MAX_ALLOWED_USERS` указаны конкретные user ID (не пусто, не «разрешить всем»)
+- [ ] `MAX_ALLOW_ALL_USERS=0` (или переменная не задана)
+- [ ] `MAX_BOT_TOKEN` хранится только в `~/.hermes/.env` с правами 600
+- [ ] Gateway работает под systemd с изоляцией на уровне пользователя
+- [ ] Pending-файлы имеют права 600
+- [ ] Бэкапы реестра хранятся в защищённой директории
+- [ ] В файлах SOUL.md нет секретов и API-ключей
+- [ ] Валидация маршрутов не позволяет переопределить системные команды
+- [ ] Откат (rollback) протестирован и доступен
 
-## Never Do
+## Никогда не делайте
 
-- [ ] Never commit real tokens, API keys, or passwords
-- [ ] Never set `MAX_ALLOW_ALL_USERS=1` in production
-- [ ] Never share your bot token in public chats
-- [ ] Never log full message text with personal data
-- [ ] Never bake secrets into Docker images
-- [ ] Never disable the allowlist
+- [ ] Никогда не коммитьте реальные токены, API-ключи и пароли
+- [ ] Никогда не ставьте `MAX_ALLOW_ALL_USERS=1` в продакшене
+- [ ] Никогда не публикуйте токен бота в публичных чатах
+- [ ] Никогда не логируйте полный текст сообщений с персональными данными
+- [ ] Никогда не зашивайте секреты в Docker-образы
+- [ ] Никогда не отключайте allowlist (белый список)
 
-## Regular Maintenance
+## Регулярное обслуживание
 
-- [ ] Rotate bot tokens periodically
-- [ ] Review allowlist for stale entries
-- [ ] Check logs for unauthorized access attempts
-- [ ] Update Hermes Agent regularly
-- [ ] Review SOUL.md files for accidentally included secrets
+- [ ] Периодически ротируйте токены бота
+- [ ] Проверяйте allowlist на устаревшие записи
+- [ ] Проверяйте логи на попытки несанкционированного доступа
+- [ ] Регулярно обновляйте Hermes Agent
+- [ ] Проверяйте файлы SOUL.md на случайно попавшие секреты

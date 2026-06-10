@@ -1,47 +1,47 @@
-# Cron and Telegram Isolation
+# Cron и изоляция от Telegram
 
-## Isolation Guarantee
+## Гарантия изоляции
 
-MAX and Telegram are **completely separate** channels in Hermes Gateway:
+MAX и Telegram — **полностью раздельные** каналы в Hermes Gateway:
 
-- Separate adapters (MaxAdapter vs TelegramAdapter)
-- Separate configs (MAX_BOT_TOKEN vs TELEGRAM_BOT_TOKEN)
-- Separate home channels
-- Separate delivery targets
+- Раздельные адаптеры (MaxAdapter и TelegramAdapter)
+- Раздельные конфиги (MAX_BOT_TOKEN и TELEGRAM_BOT_TOKEN)
+- Раздельные домашние каналы (home channels)
+- Раздельные цели доставки
 
-## Cron Tasks
+## Cron-задачи
 
-- **By default**: MAX has NO cron delivery targets
-- Telegram cron tasks (e.g., daily digests) continue to deliver to Telegram channels
-- Cron tasks do NOT auto-route to MAX
-- To enable MAX cron delivery, you must explicitly configure `MAX_HOME_CHANNEL`
+- **По умолчанию**: у MAX НЕТ целей доставки cron
+- Cron-задачи Telegram (например, ежедневные дайджесты) продолжают доставляться в каналы Telegram
+- Cron-задачи НЕ перенаправляются в MAX автоматически
+- Чтобы включить доставку cron в MAX, нужно явно настроить `MAX_HOME_CHANNEL`
 
-## Checking Isolation
+## Проверка изоляции
 
 ```bash
-# List cron jobs
+# Список cron-задач
 hermes cron list
 
-# Verify no MAX targets
-# MAX cron delivery is opt-in, not automatic
+# Убедитесь, что целей в MAX нет
+# Доставка cron в MAX включается явно, она не автоматическая
 ```
 
-## Enabling MAX Cron (Optional, Future)
+## Включение cron для MAX (опционально, на будущее)
 
-If you want cron digests delivered to MAX:
+Если вы хотите получать cron-дайджесты в MAX:
 
-1. Set in `~/.hermes/.env`:
+1. Укажите в `~/.hermes/.env`:
    ```env
    MAX_HOME_CHANNEL=user:YOUR_MAX_USER_ID
    ```
 
-2. Create a cron job with MAX delivery target
+2. Создайте cron-задачу с целью доставки в MAX
 
-3. MAX cron delivery is a separate feature from the plugin itself
+3. Доставка cron в MAX — отдельная функция, не часть самого plugin
 
-## Cross-Channel Safety
+## Безопасность между каналами
 
-- Telegram bot cannot send to MAX users
-- MAX bot cannot send to Telegram chats
-- No shared session state between platforms
-- No shared conversation history
+- Telegram-бот не может отправлять сообщения пользователям MAX
+- MAX-бот не может отправлять сообщения в чаты Telegram
+- Нет общего состояния сессий между платформами
+- Нет общей истории диалогов

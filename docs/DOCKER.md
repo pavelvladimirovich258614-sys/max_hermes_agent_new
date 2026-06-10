@@ -1,41 +1,41 @@
-# Docker (Experimental)
+# Docker (экспериментально)
 
-## Limitations
+## Ограничения
 
-Docker mode is **experimental** and has significant limitations:
+Режим Docker — **экспериментальный** и имеет существенные ограничения:
 
-- The Docker image only contains plugin files
-- Hermes Gateway must be installed and running on the host
-- Secrets must be mounted at runtime, not baked into the image
-- Persistent state (profiles, registry) must be volume-mounted
+- Docker-образ содержит только файлы plugin
+- Hermes Gateway должен быть установлен и запущен на хосте
+- Секреты нужно монтировать при запуске, а не вшивать в образ
+- Постоянное состояние (профили, реестр) должно монтироваться как volume
 
-## Usage
+## Использование
 
 ```bash
-# Clone and build
+# Клонировать и собрать
 git clone https://github.com/pavelvladimirovich258614-sys/max_hermes_agent_new.git
 cd max_hermes_agent_new
 
-# Copy and edit env
+# Скопировать и отредактировать env
 cp .env.example .env
 nano .env
 
-# Build
+# Сборка
 docker compose build
 
-# Run
+# Запуск
 docker compose up -d
 ```
 
-## Volume Mounts
+## Монтирование volume
 
-For the plugin to work, the container needs access to:
-- `~/.hermes/plugins/max/` — plugin files
-- `~/.hermes/.env` — secrets (read-only)
-- `~/.hermes/profiles/` — agent profiles
-- `~/.hermes/state/` — pending state and backups
+Чтобы plugin работал, контейнеру нужен доступ к:
+- `~/.hermes/plugins/max/` — файлы plugin
+- `~/.hermes/.env` — секреты (только чтение)
+- `~/.hermes/profiles/` — профили агентов
+- `~/.hermes/state/` — pending-состояния и резервные копии
 
-## Recommendation
+## Рекомендация
 
-For production, install the plugin natively (see [INSTALL.md](INSTALL.md)).
-Docker mode is best for testing and CI pipelines.
+Для production устанавливайте plugin нативно (см. [INSTALL.md](INSTALL.md)).
+Режим Docker лучше подходит для тестирования и CI-пайплайнов.

@@ -1,21 +1,21 @@
-# Tools and Progress Messages
+# Инструменты и progress-сообщения
 
-## Tools via MAX
+## Инструменты через MAX
 
-When you use a role route (e.g., `/dev`), the agent has access to Hermes tools:
+Когда вы используете ролевой маршрут (например, `/dev`), агенту доступны инструменты Hermes:
 
-| Tool | What it does |
+| Инструмент | Что делает |
 |------|-------------|
-| `terminal` | Execute shell commands |
-| `browser` | Navigate web pages, take screenshots |
-| `write_file` | Create/modify files (in allowed paths) |
-| `search` | Web search via SearXNG or configured backend |
+| `terminal` | Выполняет shell-команды |
+| `browser` | Открывает веб-страницы, делает скриншоты |
+| `write_file` | Создаёт/изменяет файлы (в разрешённых путях) |
+| `search` | Веб-поиск через SearXNG или настроенный бэкенд |
 
-These tools run on the **server where Hermes is installed**, not in MAX.
+Эти инструменты выполняются на **сервере, где установлен Hermes**, а не в MAX.
 
-## Progress Messages
+## Progress-сообщения
 
-When the agent uses a tool, you see progress messages in MAX chat:
+Когда агент использует инструмент, в чате MAX видны progress-сообщения:
 
 ```text
 terminal: python3 --version
@@ -25,25 +25,25 @@ write_file: /tmp/hermes-max-tool-smoke/result.txt
 Working...
 ```
 
-These appear as edit-appended messages (not separate messages) with a rate limit.
+Они дописываются редактированием одного сообщения (а не отдельными сообщениями) с rate limit.
 
-## Smoke Test
+## Smoke-тест
 
-To verify all tools work from MAX:
+Чтобы проверить, что все инструменты работают из MAX:
 
 ```text
 /dev Сделай безопасный tool-smoke тест. Используй terminal, search/browser и write_file. Ничего не меняй в проектах. Terminal: проверь версию Python и текущую директорию. Search/browser: найди официальную страницу Python. Write_file: создай только файл /tmp/hermes-max-tool-smoke/result.txt с кратким отчётом. В финале напиши, какие tools использовал и где файл.
 ```
 
-## Safety
+## Безопасность
 
-- Tools run with the permissions of the Hermes process user
-- File writes are restricted by Hermes security settings
-- The agent cannot access your MAX bot token
-- Progress messages never include raw API responses with secrets
+- Инструменты работают с правами пользователя, от которого запущен процесс Hermes
+- Запись файлов ограничена настройками безопасности Hermes
+- Агент не имеет доступа к токену вашего MAX-бота
+- Progress-сообщения никогда не содержат сырых ответов API с секретами
 
-## Rate Limiting
+## Ограничение частоты
 
-- Progress append: max 1 per 3 seconds
-- Long responses: split into ~500 char chunks
-- Markdown is converted to plain text for MAX compatibility
+- Дописывание прогресса: максимум 1 раз в 3 секунды
+- Длинные ответы разбиваются на части по ~500 символов
+- Markdown конвертируется в обычный текст для совместимости с MAX

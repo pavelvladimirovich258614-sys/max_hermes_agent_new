@@ -1,45 +1,45 @@
-# Systemd Service
+# Сервис systemd
 
-Hermes Gateway typically runs as a user-level systemd service.
+Hermes Gateway обычно работает как пользовательский (user-level) сервис systemd.
 
-## Check Status
+## Проверка статуса
 
 ```bash
 systemctl --user is-active hermes-gateway
 ```
 
-## Restart
+## Перезапуск
 
 ```bash
 systemctl --user restart hermes-gateway
 ```
 
-## View Logs
+## Просмотр логов
 
 ```bash
 tail -50 ~/.hermes/logs/gateway.log
 ```
 
-## After Plugin Changes
+## После изменения plugin
 
-After installing or updating the MAX plugin:
+После установки или обновления MAX plugin:
 
-1. Restart gateway: `systemctl --user restart hermes-gateway`
-2. Wait ~15 seconds for startup
-3. Verify: `grep "max connected" ~/.hermes/logs/gateway.log | tail -1`
-4. Test from MAX: `/status`
+1. Перезапустите gateway: `systemctl --user restart hermes-gateway`
+2. Подождите ~15 секунд, пока сервис запустится
+3. Проверьте: `grep "max connected" ~/.hermes/logs/gateway.log | tail -1`
+4. Протестируйте из MAX: `/status`
 
-## After /team-confirm
+## После /team-confirm
 
-Registry changes require a gateway restart:
+Изменения реестра требуют перезапуска gateway:
 
 ```bash
 systemctl --user restart hermes-gateway
 ```
 
-## Troubleshooting
+## Устранение неполадок
 
-If gateway fails to start:
+Если gateway не запускается:
 ```bash
 systemctl --user reset-failed hermes-gateway
 systemctl --user start hermes-gateway

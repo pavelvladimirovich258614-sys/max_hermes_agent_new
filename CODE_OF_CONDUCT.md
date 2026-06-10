@@ -1,5 +1,7 @@
 # Code of Conduct
 
+> **Кратко по-русски:** будьте уважительны и конструктивны, помогайте новичкам, принимайте критику по делу. Недопустимое поведение может привести к бану.
+
 ## Our Pledge
 
 We pledge to make participation in our project a harassment-free experience for everyone.

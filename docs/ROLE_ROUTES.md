@@ -1,48 +1,48 @@
-# Role Routes
+# Ролевые маршруты
 
-## What Are Role Routes?
+## Что такое ролевые маршруты?
 
-Role routes let you switch between specialized agent profiles by sending a slash command in MAX. Each role has its own SOUL.md (system prompt) and toolset configuration.
+Ролевые маршруты позволяют переключаться между специализированными профилями агента, отправляя slash-команду в MAX. У каждой роли свой SOUL.md (системный промпт) и своя конфигурация наборов инструментов.
 
-## How It Works
+## Как это работает
 
-1. You send `/dev fix the bug in auth.py`
-2. The adapter matches `/dev` to the `coder` profile
-3. Hermes Gateway loads `coder/SOUL.md` as the channel prompt
-4. The agent responds using the coder persona and relevant tools
+1. Вы отправляете `/dev исправь баг в auth.py`
+2. Adapter сопоставляет `/dev` с профилем `coder`
+3. Hermes Gateway загружает `coder/SOUL.md` как промпт канала
+4. Агент отвечает в персоне разработчика и с соответствующими инструментами
 
-## Default Roles
+## Роли по умолчанию
 
-### /copy — Copywriter
+### /copy — Копирайтер
 
-**Profile:** `copywriter`
-**Tools:** terminal, file, web, search
-**Scope:** Texts, posts, scripts, landing pages, emails, social media content
+**Профиль:** `copywriter`
+**Инструменты:** terminal, file, web, search
+**Зона ответственности:** тексты, посты, сценарии, лендинги, письма, контент для соцсетей
 
-### /prompt — Prompt Engineer
+### /prompt — Промпт-инженер
 
-**Profile:** `prompt`
-**Tools:** terminal, file, web, search
-**Scope:** Prompt engineering, SOUL.md authoring, AGENTS.md, system prompts
+**Профиль:** `prompt`
+**Инструменты:** terminal, file, web, search
+**Зона ответственности:** промпт-инжиниринг, написание SOUL.md, AGENTS.md, системные промпты
 
-### /marketing — Marketer
+### /marketing — Маркетолог
 
-**Profile:** `marketer`
-**Tools:** terminal, file, web, search
-**Scope:** Target audience, offers, strategy, analytics, campaigns
+**Профиль:** `marketer`
+**Инструменты:** terminal, file, web, search
+**Зона ответственности:** целевая аудитория, офферы, стратегия, аналитика, кампании
 
-### /dev — Coder
+### /dev — Разработчик
 
-**Profile:** `coder`
-**Tools:** terminal, file, web, search
-**Scope:** Code, server, debugging, API, deployment
+**Профиль:** `coder`
+**Инструменты:** terminal, file, web, search
+**Зона ответственности:** код, сервер, отладка, API, деплой
 
-## Adding Custom Roles
+## Добавление своих ролей
 
-Use `/team-add` to create new roles from MAX chat, or manually:
+Используйте `/team-add` для создания новых ролей прямо из чата MAX, либо вручную:
 
-1. Create profile: `~/.hermes/profiles/myrole/SOUL.md`
-2. Add to `~/.hermes/plugins/max/role_registry.yaml`:
+1. Создайте профиль: `~/.hermes/profiles/myrole/SOUL.md`
+2. Добавьте запись в `~/.hermes/plugins/max/role_registry.yaml`:
 
 ```yaml
   myrole:
@@ -53,14 +53,14 @@ Use `/team-add` to create new roles from MAX chat, or manually:
     soul_path: ~/.hermes/profiles/myrole/SOUL.md
     display_name: "My Role"
     emoji: "🤖"
-    description: "Description of my role"
+    description: "Описание моей роли"
 ```
 
-3. Restart gateway
+3. Перезапустите gateway
 
-## Toolsets
+## Наборы инструментов
 
-Each role can specify which Hermes tools are available:
+Для каждой роли можно указать, какие инструменты Hermes ей доступны:
 
 ```yaml
     toolsets:
@@ -70,4 +70,4 @@ Each role can specify which Hermes tools are available:
       - search
 ```
 
-If no toolsets specified, Hermes defaults apply.
+Если наборы инструментов не указаны, применяются значения Hermes по умолчанию.

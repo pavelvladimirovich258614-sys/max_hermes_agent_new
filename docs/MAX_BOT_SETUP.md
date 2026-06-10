@@ -1,62 +1,62 @@
-# MAX Bot Setup
+# Настройка бота MAX
 
-## Creating a MAX Bot
+## Создание бота MAX
 
-1. Open MAX messenger
-2. Find @mail_bot (official MAX bot for creating bots)
-3. Send `/newbot`
-4. Choose a name for your bot (e.g., "My Hermes Agent")
-5. Choose a username (e.g., "my_hermes_agent_bot")
-6. You will receive a bot token — **save it securely**
+1. Откройте мессенджер MAX
+2. Найдите @mail_bot (официальный бот MAX для создания ботов)
+3. Отправьте `/newbot`
+4. Выберите имя для бота (например, "My Hermes Agent")
+5. Выберите username (например, "my_hermes_agent_bot")
+6. Вы получите токен бота — **сохраните его в надёжном месте**
 
-## Token Security
+## Безопасность токена
 
-- **Never** share your bot token
-- **Never** commit it to any repository
-- **Never** send it in public chats
-- Store it only in `~/.hermes/.env` with mode 600
+- **Никогда** не делитесь токеном бота
+- **Никогда** не коммитьте его ни в какой репозиторий
+- **Никогда** не отправляйте его в публичных чатах
+- Храните его только в `~/.hermes/.env` с правами 600
 
-## Verifying Your Token
+## Проверка токена
 
 ```bash
 python3 scripts/verify_max_token.py
 ```
 
-This calls `GET https://platform-api.max.ru/me` and shows:
-- Bot ID
-- Bot name
-- Bot username
+Скрипт вызывает `GET https://platform-api.max.ru/me` и показывает:
+- ID бота
+- Имя бота
+- Username бота
 - Is bot: true
 
-The token itself is **never** printed.
+Сам токен **никогда** не печатается.
 
-## Finding Your User ID
+## Как узнать свой User ID
 
-Send `/start` to your own bot while it is running with `MAX_ALLOW_ALL_USERS=1` (temporarily).
-Check the gateway log for the incoming user ID.
+Отправьте `/start` своему боту, временно запущенному с `MAX_ALLOW_ALL_USERS=1`.
+Посмотрите в логе gateway user ID входящего сообщения.
 
-**Important:** After finding your ID, immediately set `MAX_ALLOW_ALL_USERS=0` and add your ID to `MAX_ALLOWED_USERS`.
+**Важно:** как только узнали свой ID, сразу установите `MAX_ALLOW_ALL_USERS=0` и добавьте свой ID в `MAX_ALLOWED_USERS`.
 
-## Long Polling vs Webhook
+## Long polling против webhook
 
-This plugin uses **long polling** by default.
+Этот plugin по умолчанию использует **long polling**.
 
-- Long polling: simple, no public endpoint needed, good for dev/test
-- Webhook: requires a public HTTPS endpoint, better for production
+- Long polling: просто, не нужен публичный endpoint, подходит для разработки и тестов
+- Webhook: требует публичный HTTPS endpoint, лучше для продакшена
 
-If a webhook is already set on the bot, polling may not receive updates.
-To switch to polling, you may need to delete the webhook first via MAX Bot API.
+Если на боте уже установлен webhook, polling может не получать обновления.
+Чтобы переключиться на polling, может потребоваться сначала удалить webhook через MAX Bot API.
 
-## Groups and Channels
+## Группы и каналы
 
-- In **DM**: messages are addressed by `user_id`
-- In **groups/channels**: bot must be added as admin, messages use `chat_id`
-- The `Unknown recipient` error occurs when sending to an invalid chat_id format
+- В **личных сообщениях**: адресация идёт по `user_id`
+- В **группах/каналах**: бота нужно добавить администратором, сообщения адресуются по `chat_id`
+- Ошибка `Unknown recipient` возникает при отправке на chat_id в неверном формате
 
 ## Allowlist
 
-The allowlist (`MAX_ALLOWED_USERS`) is critical for security:
+Allowlist (белый список, `MAX_ALLOWED_USERS`) критически важен для безопасности:
 
-- Only listed user IDs can send commands to Hermes
-- Without the allowlist, anyone who finds your bot can control your server
-- **Never** set `MAX_ALLOW_ALL_USERS=1` in production
+- Только перечисленные user ID могут отправлять команды Hermes
+- Без allowlist любой, кто найдёт вашего бота, сможет управлять вашим сервером
+- **Никогда** не устанавливайте `MAX_ALLOW_ALL_USERS=1` в продакшене

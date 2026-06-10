@@ -1,5 +1,7 @@
 # Contributing
 
+> **Кратко по-русски:** как внести вклад — сделайте fork, создайте ветку, внесите изменения, прогоните `bash scripts/check_secrets.sh` и тесты (`cd plugin/max && python3 -m unittest tests.test_adapter -v`), затем откройте Pull Request. Никогда не включайте в код и issue реальные токены, user ID и chat ID — только placeholders.
+
 Thank you for your interest in improving MAX Hermes Agent!
 
 ## How to Contribute

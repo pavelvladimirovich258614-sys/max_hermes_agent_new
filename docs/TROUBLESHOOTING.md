@@ -1,93 +1,93 @@
-# Troubleshooting
+# Устранение неполадок
 
-## "Unauthorized user: XXXXXXX on max"
+## «Unauthorized user: XXXXXXX on max»
 
-**Cause:** `MAX_ALLOWED_USERS` is empty or does not include your user ID.
+**Причина:** `MAX_ALLOWED_USERS` пуст или не содержит ваш user ID.
 
-**Fix:**
+**Решение:**
 ```bash
 grep MAX_ALLOWED_USERS ~/.hermes/.env
-# Should contain your numeric user ID
-# If not, add it and restart gateway
+# Должен содержать ваш числовой user ID
+# Если его нет — добавьте и перезапустите gateway
 ```
 
-## "HTTP 400 Unknown recipient"
+## «HTTP 400 Unknown recipient»
 
-**Cause:** Incorrect chat_id format in send().
+**Причина:** неверный формат chat_id в send().
 
-**Fix:** The adapter should use numeric chat_id (int), not tagged strings like `user:XXXXXXX`.
-Check `adapter.py:_send_one` — it strips the prefix.
+**Решение:** adapter должен использовать числовой chat_id (int), а не строки с префиксом вида `user:XXXXXXX`.
+Проверьте `adapter.py:_send_one` — там префикс отрезается.
 
-## "No module named 'team_manager'"
+## «No module named 'team_manager'»
 
-**Cause:** Relative import not resolving.
+**Причина:** не разрешается относительный импорт.
 
-**Fix:** The adapter uses a try/except for imports:
+**Решение:** adapter использует try/except для импортов:
 ```python
 try:
     from .team_manager import core as tm_core
 except ImportError:
     from team_manager import core as tm_core
 ```
-Make sure `team_manager/` is in the same directory as `adapter.py`.
+Убедитесь, что директория `team_manager/` лежит рядом с `adapter.py`.
 
-## Gateway Fails to Start
+## Gateway не запускается
 
-**Check logs:**
+**Проверьте логи:**
 ```bash
 tail -30 ~/.hermes/logs/gateway.log
 ```
 
-Common issues:
-- Invalid MAX_BOT_TOKEN
-- Network unreachable (platform-api.max.ru)
-- Another process using the same bot token (webhook conflict)
+Типичные проблемы:
+- Неверный MAX_BOT_TOKEN
+- Сеть недоступна (platform-api.max.ru)
+- Тот же токен бота используется другим процессом (конфликт с webhook)
 
-## MAX Bot Not Responding
+## Бот MAX не отвечает
 
-1. Check gateway is running: `systemctl --user is-active hermes-gateway`
-2. Check MAX connected in logs: `grep "max connected" ~/.hermes/logs/gateway.log`
-3. Check your user ID is in allowlist
-4. Try `/status` first (simplest command)
+1. Проверьте, что gateway работает: `systemctl --user is-active hermes-gateway`
+2. Проверьте подключение MAX в логах: `grep "max connected" ~/.hermes/logs/gateway.log`
+3. Проверьте, что ваш user ID есть в allowlist (белом списке)
+4. Сначала попробуйте `/status` (самая простая команда)
 
-## Progress Messages Not Showing
+## Не отображаются сообщения о прогрессе
 
-**Cause:** `MAX_PROGRESS_APPEND=1` not set.
+**Причина:** не задана переменная `MAX_PROGRESS_APPEND=1`.
 
-**Fix:**
+**Решение:**
 ```bash
 grep MAX_PROGRESS_APPEND ~/.hermes/.env
-# Should be: MAX_PROGRESS_APPEND=1
+# Должно быть: MAX_PROGRESS_APPEND=1
 ```
 
-## Role Route Not Working
+## Ролевой маршрут не работает
 
-**Cause:** Registry not loaded or route not registered.
+**Причина:** реестр не загружен или маршрут не зарегистрирован.
 
-**Fix:**
-1. Check `~/.hermes/plugins/max/role_registry.yaml` has the route
-2. Check `enabled: true` for the role
-3. Restart gateway (no hot-reload for registry)
+**Решение:**
+1. Проверьте, что маршрут есть в `~/.hermes/plugins/max/role_registry.yaml`
+2. Проверьте, что у роли стоит `enabled: true`
+3. Перезапустите gateway (горячая перезагрузка реестра не поддерживается)
 
-## Tool Errors from MAX
+## Ошибки инструментов из MAX
 
-**Cause:** Hermes tools depend on server environment.
+**Причина:** инструменты Hermes зависят от окружения сервера.
 
-**Fix:**
-1. Check the tool is available: terminal, browser, write_file
-2. Check permissions of the Hermes process user
-3. Check tool-specific config in Hermes profile
+**Решение:**
+1. Проверьте, что инструмент доступен: terminal, browser, write_file
+2. Проверьте права пользователя, под которым работает процесс Hermes
+3. Проверьте конфигурацию конкретного инструмента в профиле Hermes
 
-## Telegram Forbidden Errors
+## Ошибки Telegram Forbidden
 
-**Cause:** This is a Telegram adapter issue, not related to MAX.
+**Причина:** это проблема Telegram adapter, к MAX она не относится.
 
-The Telegram adapter may show `Forbidden: bot can't initiate conversation` errors for old queued messages. This does NOT affect MAX operation. MAX and Telegram are isolated.
+Telegram adapter может выдавать ошибки `Forbidden: bot can't initiate conversation` для старых сообщений из очереди. На работу MAX это НЕ влияет. MAX и Telegram изолированы друг от друга.
 
-## Debug Mode
+## Режим отладки
 
-For verbose logging, set in `~/.hermes/.env`:
+Для подробного логирования задайте в `~/.hermes/.env`:
 ```env
 LOG_LEVEL=DEBUG
 ```
-Then restart gateway. Remember to set back to INFO for production.
+Затем перезапустите gateway. Не забудьте вернуть INFO для продакшена.

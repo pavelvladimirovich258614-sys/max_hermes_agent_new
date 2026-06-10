@@ -1,34 +1,34 @@
-# Hermes Agent Setup
+# Настройка Hermes Agent
 
-## Installing Hermes Agent
+## Установка Hermes Agent
 
-Follow the official guide: https://hermes-agent.nousresearch.com/docs
+Следуйте официальному руководству: https://hermes-agent.nousresearch.com/docs
 
 ```bash
-# Install Hermes Agent
+# Установить Hermes Agent
 pip install hermes-agent
 
-# Initialize
+# Инициализировать
 hermes init
 
-# Configure your model provider
+# Настроить провайдера модели
 hermes config set model.provider your_provider
 hermes config set model.default your_model
 ```
 
-## Verify Hermes Works
+## Проверка работы Hermes
 
 ```bash
-# Start gateway
+# Запустить gateway
 hermes gateway start
 
-# Test from CLI
+# Проверить из CLI
 hermes chat "Hello, are you working?"
 ```
 
-## Then Install MAX Plugin
+## Затем установите MAX plugin
 
-After Hermes is working, install the MAX plugin:
+Когда Hermes работает, установите MAX plugin:
 
 ```bash
 git clone https://github.com/pavelvladimirovich258614-sys/max_hermes_agent_new.git
@@ -36,4 +36,4 @@ cd max_hermes_agent_new
 bash scripts/install_plugin.sh
 ```
 
-See [INSTALL.md](INSTALL.md) for full instructions.
+Полная инструкция — в [INSTALL.md](INSTALL.md).

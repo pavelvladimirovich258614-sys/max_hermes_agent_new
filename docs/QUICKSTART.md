@@ -1,11 +1,11 @@
-# Quick Start (5 minutes)
+# Быстрый старт (5 минут)
 
-## 1. Get a MAX bot token
+## 1. Получите токен бота MAX
 
-Open MAX, find @mail_bot, send `/newbot`, follow instructions.
-See [MAX_BOT_SETUP.md](MAX_BOT_SETUP.md) for details.
+Откройте MAX, найдите @mail_bot, отправьте `/newbot`, следуйте инструкциям.
+Подробнее — в [MAX_BOT_SETUP.md](MAX_BOT_SETUP.md).
 
-## 2. Install
+## 2. Установите plugin
 
 ```bash
 git clone https://github.com/pavelvladimirovich258614-sys/max_hermes_agent_new.git
@@ -13,9 +13,9 @@ cd max_hermes_agent_new
 bash scripts/install_plugin.sh
 ```
 
-## 3. Configure
+## 3. Настройте
 
-Edit `~/.hermes/.env`:
+Отредактируйте `~/.hermes/.env`:
 
 ```env
 MAX_BOT_TOKEN=your_token_here
@@ -23,22 +23,22 @@ MAX_ALLOWED_USERS=your_user_id
 MAX_PROGRESS_APPEND=1
 ```
 
-## 4. Start
+## 4. Запустите
 
 ```bash
 systemctl --user restart hermes-gateway
 ```
 
-## 5. Test
+## 5. Проверьте
 
-From MAX, send: `/status`
+Из MAX отправьте: `/status`
 
-Then: `/dev скажи "hello"`
+Затем: `/dev скажи "hello"`
 
-Done!
+Готово!
 
-## Next Steps
+## Что дальше
 
-- [Add roles](ROLE_ROUTES.md) — copywriter, marketer, coder, etc.
-- [Create custom agents](TEAM_ADD.md) — from MAX chat
-- [Use tools](TOOLS_AND_PROGRESS.md) — terminal, browser, write_file
+- [Добавить роли](ROLE_ROUTES.md) — копирайтер, маркетолог, кодер и т.д.
+- [Создать своих агентов](TEAM_ADD.md) — прямо из чата MAX
+- [Использовать инструменты](TOOLS_AND_PROGRESS.md) — терминал, браузер, write_file

@@ -1,45 +1,45 @@
-# Commands Reference
+# Справочник команд
 
-## Hermes Core Commands
+## Базовые команды Hermes
 
-| Command | Description |
-|---------|-------------|
-| `/status` | Show agent status and config |
-| `/model` | Show or change model |
-| `/new` | Start new conversation |
-| `/reset` | Reset current session |
-| `/stop` | Stop current generation |
-| `/retry` | Retry last response |
-| `/undo` | Undo last exchange |
-| `/commands` | List available commands |
+| Команда | Описание |
+|---------|----------|
+| `/status` | Показать статус агента и конфигурацию |
+| `/model` | Показать или сменить модель |
+| `/new` | Начать новый диалог |
+| `/reset` | Сбросить текущую сессию |
+| `/stop` | Остановить текущую генерацию |
+| `/retry` | Повторить последний ответ |
+| `/undo` | Отменить последний обмен сообщениями |
+| `/commands` | Список доступных команд |
 
-## Role Route Commands
+## Команды ролевых маршрутов
 
-Each role route activates a specialized agent profile:
+Каждый ролевой маршрут активирует специализированный профиль агента:
 
-| Command | Role | Profile | Description |
-|---------|------|---------|-------------|
-| `/copy` | Copywriter | copywriter | Texts, posts, scripts, landing pages |
-| `/prompt` | Prompt Engineer | prompt | Prompts, SOUL.md, AGENTS.md |
-| `/marketing` | Marketer | marketer | Audience, offers, strategy |
-| `/dev` | Coder | coder | Code, server, debugging, API |
+| Команда | Роль | Профиль | Описание |
+|---------|------|---------|----------|
+| `/copy` | Копирайтер | copywriter | Тексты, посты, сценарии, лендинги |
+| `/prompt` | Промпт-инженер | prompt | Промпты, SOUL.md, AGENTS.md |
+| `/marketing` | Маркетолог | marketer | Аудитория, офферы, стратегия |
+| `/dev` | Кодер | coder | Код, сервер, отладка, API |
 
-**Usage:** Send command followed by your request:
+**Использование:** отправьте команду, а за ней — ваш запрос:
 ```
 /copy Напиши продающий пост про AI-бота
 ```
 
-The rest of the message becomes the task for the role.
+Остальная часть сообщения становится задачей для роли.
 
-## Team Management Commands
+## Команды управления командой агентов
 
-| Command | Description |
-|---------|-------------|
-| `/team-add` | Preview new agent (dry-run) |
-| `/team-confirm <id>` | Create agent for real |
-| `/team-cancel <id>` | Cancel pending creation |
-| `/team-rollback <name>` | Remove agent + rollback registry |
-| `/team-list` | List pending requests |
+| Команда | Описание |
+|---------|----------|
+| `/team-add` | Предпросмотр нового агента (dry-run) |
+| `/team-confirm <id>` | Создать агента по-настоящему |
+| `/team-cancel <id>` | Отменить ожидающее создание |
+| `/team-rollback <name>` | Удалить агента и откатить реестр |
+| `/team-list` | Список ожидающих запросов |
 
 ### /team-add
 
@@ -47,18 +47,18 @@ The rest of the message becomes the task for the role.
 /team-add name=designer route=/design title="Дизайнер" SOUL:Ты дизайнер визуалов...
 ```
 
-**Parameters:**
-- `name` — Agent identifier (lowercase, 2-32 chars)
-- `route` — Slash command (e.g., `/design`)
-- `title` — Display name (1-64 chars)
-- `SOUL:` — Agent instructions (100-12000 chars, rest of message)
+**Параметры:**
+- `name` — идентификатор агента (строчные буквы, 2–32 символа)
+- `route` — slash-команда (например, `/design`)
+- `title` — отображаемое имя (1–64 символа)
+- `SOUL:` — инструкции агента (100–12000 символов, остаток сообщения)
 
-**Validations:**
-- Name: `[a-z0-9_-]{2,32}`
-- Route: `/[a-z0-9_-]{2,32}`
-- No system route override (`/status`, `/model`, etc.)
-- No duplicate routes or profiles
-- No secrets in SOUL (ghp_, sk-, BOT_TOKEN patterns)
+**Валидации:**
+- Имя: `[a-z0-9_-]{2,32}`
+- Маршрут: `/[a-z0-9_-]{2,32}`
+- Нельзя перекрывать системные маршруты (`/status`, `/model` и т.д.)
+- Нельзя дублировать маршруты и профили
+- В SOUL не должно быть секретов (паттерны ghp_, sk-, BOT_TOKEN)
 
 ### /team-confirm
 
@@ -66,13 +66,13 @@ The rest of the message becomes the task for the role.
 /team-confirm ta_20250610_140535_d90b27
 ```
 
-Creates:
+Создаёт:
 - `~/.hermes/profiles/<name>/SOUL.md`
 - `~/.hermes/profiles/<name>/config.yaml`
-- Registry entry in `role_registry.yaml`
-- Backup of registry before edit
+- Запись в реестре `role_registry.yaml`
+- Бэкап реестра перед изменением
 
-**Requires gateway restart after confirm.**
+**После confirm требуется перезапуск gateway.**
 
 ### /team-rollback
 
@@ -80,16 +80,16 @@ Creates:
 /team-rollback designer
 ```
 
-Removes:
-- Profile directory
-- Registry entry
-- Any pending state for this name
+Удаляет:
+- Директорию профиля
+- Запись в реестре
+- Любое ожидающее состояние для этого имени
 
-**Requires gateway restart after rollback.**
+**После rollback требуется перезапуск gateway.**
 
-## Custom Routes
+## Свои маршруты
 
-You can add any role via `/team-add`. Examples:
+Через `/team-add` можно добавить любую роль. Примеры:
 
 ```text
 /team-add name=analyst route=/analyst title="Аналитик" SOUL:Ты аналитик данных. Анализируешь метрики, строишь графики, делаешь выводы на основе данных. Работаешь с Python, pandas, matplotlib. Не меняешь файлы без подтверждения.
