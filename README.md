@@ -1,28 +1,32 @@
 ![MAX Hermes Agent](assets/cover.svg)
 
-# MAX Hermes Agent — канал MAX для Hermes Gateway
+# MAX Hermes Agent
 
-Это не отдельный чат-бот, а **platform plugin**, который подключает мессенджер [MAX](https://max.ru) как полноценный канал [Hermes Gateway](https://hermes-agent.nousresearch.com). Все возможности агента — рассуждения, инструменты, роли, профили — доступны прямо из чата MAX.
+**Полноценный канал MAX для Hermes Gateway**
 
-Путь сообщения:
+MAX Hermes Agent подключает мессенджер MAX к Hermes Agent как полноценный канал Gateway. Это не отдельный бот-обёртка, а platform plugin для Hermes Gateway.
 
-```
-MAX → MAX plugin → Hermes Gateway → Hermes Agent → tools/roles/profiles → ответ в MAX
-```
+Схема работы:
 
-## Возможности
+`MAX → MAX plugin → Hermes Gateway → Hermes Agent → tools/roles/profiles → ответ в MAX`
+
+## Что это
+
+Plugin, который ставится в `~/.hermes/plugins/max` и подключает мессенджер [MAX](https://max.ru) к [Hermes Gateway](https://hermes-agent.nousresearch.com). Все возможности агента — рассуждения, инструменты, роли, профили — становятся доступны прямо из чата MAX. Ядро Hermes при этом не изменяется.
+
+## Что умеет
 
 | Возможность | Описание |
 |-------------|----------|
 | **Slash-команды Hermes** | `/status`, `/model`, `/new`, `/reset` и другие — прямо из MAX |
-| **Роли** | `/copy`, `/prompt`, `/marketing`, `/dev` и собственные роли |
-| **Allowlist** | Отвечает только пользователям из `MAX_ALLOWED_USERS` |
-| **Long polling** | Получение обновлений через MAX Bot API, webhook не требуется |
+| **Ролевые маршруты** | `/copy`, `/prompt`, `/marketing`, `/dev` и собственные роли |
+| **Список разрешённых пользователей** | Отвечает только пользователям из `MAX_ALLOWED_USERS` |
+| **Long Polling** | Получение обновлений через MAX Bot API, webhook не требуется |
 | **Инструменты** | terminal, browser/search, write_file — из чата MAX |
-| **Прогресс** | Сообщения о ходе выполнения инструментов в реальном времени |
-| **Team Add** | Создание новых агентов из MAX с предпросмотром и откатом |
+| **Прогресс выполнения** | Сообщения о ходе работы инструментов в реальном времени |
+| **Добавление агентов** | Создание новых агентов из MAX с предпросмотром и откатом |
 | **Изоляция** | Никаких пересечений с Telegram-каналами и cron |
-| **Скрипты** | systemd/restart, smoke, doctor, check_secrets |
+| **Скрипты обслуживания** | systemd/restart, smoke, doctor, check_secrets |
 
 ## Быстрый старт
 
@@ -37,10 +41,8 @@ bash scripts/check_secrets.sh
 # 3. Установить plugin в ~/.hermes/plugins/max
 bash scripts/install_plugin.sh
 
-# 4. Настроить ~/.hermes/.env (токен и allowlist)
+# 4. Настроить ~/.hermes/.env (токен и список пользователей)
 nano ~/.hermes/.env
-# MAX_BOT_TOKEN=PASTE_YOUR_MAX_BOT_TOKEN_HERE
-# MAX_ALLOWED_USERS=YOUR_MAX_USER_ID
 
 # 5. Проверить токен (сам токен не печатается)
 python3 scripts/verify_max_token.py
@@ -59,17 +61,77 @@ systemctl --user restart hermes-gateway
 
 Подробнее: [docs/QUICKSTART.md](docs/QUICKSTART.md).
 
-### Откат / удаление
+## Установка
 
-```bash
-bash scripts/uninstall_plugin.sh
+Подробные инструкции — в [docs/INSTALL.md](docs/INSTALL.md):
+- **Вариант A** — установка в существующий Hermes (рекомендуется)
+- **Вариант B** — ручное копирование
+- **Вариант C** — Docker (экспериментально)
+- **Вариант D** — режим разработки
+
+## Настройка токена
+
+Токен бота выдаёт @metabot в MAX (см. [docs/MAX_BOT_SETUP.md](docs/MAX_BOT_SETUP.md)). Храните его только в `~/.hermes/.env`:
+
+```env
+MAX_BOT_TOKEN=PASTE_YOUR_MAX_BOT_TOKEN
+MAX_ALLOWED_USERS=PASTE_YOUR_MAX_USER_ID
 ```
 
-Скрипт удаляет только `~/.hermes/plugins/max` (спросит подтверждение). Ваши `.env`, `profiles/` и `state/` сохраняются. После удаления перезапустите gateway:
+В репозитории лежит только шаблон [.env.example](.env.example) с placeholders — реальные значения никогда не коммитятся.
+
+## Проверка
 
 ```bash
-systemctl --user restart hermes-gateway
+# Токен валиден (сам токен не печатается)
+python3 scripts/verify_max_token.py
+
+# Plugin установлен, файлы на месте
+bash scripts/doctor.sh
+
+# В репозитории нет секретов
+bash scripts/check_secrets.sh
 ```
+
+После перезапуска gateway отправьте боту `/status` в MAX — должен прийти статус агента.
+
+## Команды в MAX
+
+Базовые команды Hermes:
+
+`/status` `/model` `/new` `/reset` `/stop` `/retry` `/undo` `/commands`
+
+Управление командой агентов:
+
+| Команда | Описание |
+|---------|----------|
+| `/team-add` | Предпросмотр нового агента (dry-run) |
+| `/team-confirm <id>` | Реальное создание агента |
+| `/team-cancel <id>` | Отмена ожидающего создания |
+| `/team-rollback <name>` | Удаление агента с откатом |
+| `/team-list` | Список ожидающих запросов |
+
+Полный справочник: [docs/COMMANDS.md](docs/COMMANDS.md).
+
+## Ролевые команды
+
+| Команда | Роль | Для чего |
+|---------|------|----------|
+| `/copy` | Копирайтер | Тексты, посты, сценарии, лендинги |
+| `/prompt` | Промпт-инженер | Промпты, SOUL.md, AGENTS.md |
+| `/marketing` | Маркетолог | Аудитория, офферы, стратегия, аналитика |
+| `/dev` | Разработчик | Код, сервер, отладка, API |
+
+Примеры:
+
+```
+/copy Напиши продающий пост про AI-бота
+/prompt Сделай промпт для рекламного видео
+/marketing Придумай стратегию продвижения на 7 дней
+/dev Проверь версию Python на сервере
+```
+
+Подробнее: [docs/ROLE_ROUTES.md](docs/ROLE_ROUTES.md).
 
 ## Архитектура
 
@@ -87,7 +149,7 @@ flowchart LR
     M --> U
 ```
 
-### Изоляция от Telegram
+Изоляция от Telegram:
 
 ```mermaid
 flowchart TB
@@ -99,55 +161,27 @@ flowchart TB
 
 Подробнее: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/CRON_AND_TELEGRAM_ISOLATION.md](docs/CRON_AND_TELEGRAM_ISOLATION.md).
 
-## Команды
-
-### Базовые команды Hermes
-`/status` `/model` `/new` `/reset` `/stop` `/retry` `/undo` `/commands`
-
-### Роли
-| Команда | Роль | Для чего |
-|---------|------|----------|
-| `/copy` | Копирайтер | Тексты, посты, сценарии, лендинги |
-| `/prompt` | Промпт-инженер | Промпты, SOUL.md, AGENTS.md |
-| `/marketing` | Маркетолог | Аудитория, офферы, стратегия, аналитика |
-| `/dev` | Разработчик | Код, сервер, отладка, API |
-
-### Управление командой агентов
-| Команда | Описание |
-|---------|----------|
-| `/team-add` | Предпросмотр нового агента (dry-run) |
-| `/team-confirm <id>` | Реальное создание агента |
-| `/team-cancel <id>` | Отмена ожидающего создания |
-| `/team-rollback <name>` | Удаление агента с откатом |
-| `/team-list` | Список ожидающих запросов |
-
-### Примеры
-```
-/copy Напиши продающий пост про AI-бота
-/prompt Сделай промпт для рекламного видео
-/marketing Придумай стратегию продвижения на 7 дней
-/dev Проверь версию Python на сервере
-```
-
-Полный справочник: [docs/COMMANDS.md](docs/COMMANDS.md).
-
-## Установка
-
-Подробные инструкции — в [docs/INSTALL.md](docs/INSTALL.md):
-- **Вариант A** — установка в существующий Hermes (рекомендуется)
-- **Вариант B** — ручное копирование
-- **Вариант C** — Docker (экспериментально)
-- **Вариант D** — режим разработки
-
 ## Безопасность
 
-- **Токен хранится только в `~/.hermes/.env`** — никогда не коммитьте `.env`; в репозитории лежит только шаблон `.env.example` с placeholders.
-- **`MAX_ALLOWED_USERS` обязателен** — без allowlist бот не должен работать в продакшене.
+- **Токен хранится только в `~/.hermes/.env`** — никогда не коммитьте `.env` и не публикуйте `MAX_BOT_TOKEN`.
+- **`MAX_ALLOWED_USERS` обязателен** — без списка разрешённых пользователей бот не должен работать в продакшене.
 - **`MAX_ALLOW_ALL_USERS` не использовать в проде** — только для локальной отладки.
 - **Скан секретов** — `bash scripts/check_secrets.sh` перед каждым коммитом/пушем.
-- **Откат** — каждое создание агента через team-add можно отменить.
+- **Откат** — каждое создание агента через `/team-add` можно отменить.
 
 Подробнее: [SECURITY.md](SECURITY.md) и [docs/SECURITY_CHECKLIST.md](docs/SECURITY_CHECKLIST.md).
+
+## Откат / удаление
+
+```bash
+bash scripts/uninstall_plugin.sh
+```
+
+Скрипт удаляет только `~/.hermes/plugins/max` (спросит подтверждение). Ваши `.env`, `profiles/` и `state/` сохраняются. После удаления перезапустите gateway:
+
+```bash
+systemctl --user restart hermes-gateway
+```
 
 ## Что не входит в scope
 
