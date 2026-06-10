@@ -24,13 +24,14 @@ def main():
         sys.exit(1)
     url = "https://platform-api.max.ru/me"
     req = urllib.request.Request(url)
-    req.add_header("Authorization", f"Bearer {token}")
+    # MAX API expects the raw token in Authorization, without "Bearer"
+    req.add_header("Authorization", token)
     req.add_header("Content-Type", "application/json")
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
             data = json.loads(resp.read().decode("utf-8"))
         print("Token valid!")
-        print(f"  Bot ID:       {data.get('id', 'N/A')}")
+        print(f"  Bot ID:       {data.get('user_id', data.get('id', 'N/A'))}")
         print(f"  Bot name:     {data.get('name', 'N/A')}")
         print(f"  Bot username: {data.get('username', 'N/A')}")
         print(f"  Is bot:       {data.get('is_bot', 'N/A')}")
