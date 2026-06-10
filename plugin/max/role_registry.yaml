@@ -1,0 +1,82 @@
+# MAX Role Registry — F-NEXT-03
+# Maps /command → profile for adapter-level role routing.
+# Only roles with enabled:true are active.
+
+roles:
+  copy:
+    enabled: true
+    command: /copy
+    profile: copywriter
+    profile_path: ~/.hermes/profiles/copywriter
+    soul_path: ~/.hermes/profiles/copywriter/SOUL.md
+    display_name: "Копирайтер"
+    emoji: "✏️"
+    toolsets:
+      - terminal
+      - file
+      - web
+      - search
+    description: "Тексты, посты, сценарии, лендинги"
+
+  # Future roles — NOT active yet (enabled: false).
+  # Enable one at a time after /copy is stable.
+
+  dev:
+    enabled: true
+    command: /dev
+    profile: coder
+    profile_path: ~/.hermes/profiles/coder
+    soul_path: ~/.hermes/profiles/coder/SOUL.md
+    display_name: "Кодер"
+    emoji: "👨🏻‍💻"
+    description: "Код, сервер, отладка, API"
+
+  marketing:
+    enabled: true
+    command: /marketing
+    profile: marketer
+    profile_path: ~/.hermes/profiles/marketer
+    soul_path: ~/.hermes/profiles/marketer/SOUL.md
+    display_name: "Маркетолог"
+    emoji: "🌍"
+    description: "ЦА, оффер, стратегия, аналитика"
+
+  crypto:
+    enabled: false
+    command: /crypto
+    profile: crypto-mentor
+    profile_path: ~/.hermes/profiles/crypto-mentor
+    soul_path: ~/.hermes/profiles/crypto-mentor/SOUL.md
+    display_name: "Криптоментор"
+    emoji: "💰"
+    description: "Trust Wallet, сети, комиссии, безопасность"
+
+  prompt:
+    enabled: true
+    command: /prompt
+    profile: prompt
+    profile_path: ~/.hermes/profiles/prompt
+    soul_path: ~/.hermes/profiles/prompt/SOUL.md
+    display_name: "Промт-инженер"
+    emoji: "📒"
+    description: "Промпты, SOUL.md, AGENTS.md, PLAN/BUILD"
+
+  flora:
+    enabled: false
+    command: /flora
+    profile: flora
+    profile_path: ~/.hermes/profiles/flora
+    soul_path: ~/.hermes/profiles/flora/SOUL.md
+    display_name: "Флора"
+    emoji: "📸"
+    description: "Флаеры, баннеры, презентации, визуальные промпты"
+
+
+
+
+
+
+
+
+
+

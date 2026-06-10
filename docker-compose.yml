@@ -1,0 +1,23 @@
+# MAX Hermes Agent — Docker Compose (experimental)
+#
+# IMPORTANT:
+# - This is for development/testing only.
+# - Hermes Agent must already be installed on the host.
+# - Secrets are mounted at runtime via .env — never baked into the image.
+# - See docs/DOCKER.md for full instructions.
+
+version: "3.8"
+
+services:
+  max-hermes-plugin:
+    build: .
+    environment:
+      - MAX_BOT_TOKEN=\${MAX_BOT_TOKEN}
+      - MAX_ALLOWED_USERS=\${MAX_ALLOWED_USERS}
+    volumes:
+      - ./plugin/max:/root/.hermes/plugins/max:ro
+      # Mount your Hermes home for persistent state:
+      # - ~/.hermes:/root/.hermes
+    # This container only provides the plugin files.
+    # The actual Hermes Gateway runs on the host.
+    command: ["echo", "See docs/DOCKER.md"]

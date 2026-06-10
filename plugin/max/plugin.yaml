@@ -1,0 +1,30 @@
+name: max-platform
+label: MAX
+kind: platform
+version: 0.1.0
+description: >
+  Messenger MAX (max.ru) gateway adapter for Hermes Agent.
+  MVP step 1: token validation via GET /me, no message handling yet.
+author: Pavel / Hermes Agent
+requires_env:
+  - name: MAX_BOT_TOKEN
+    description: "MAX bot token issued by @metabot on max.ru (Authorization: <token>, no Bearer prefix)"
+    prompt: "MAX bot token"
+    password: true
+optional_env:
+  - name: MAX_API_BASE
+    description: "MAX platform API base URL (default: https://platform-api.max.ru)"
+    prompt: "MAX API base"
+    password: false
+  - name: MAX_HOME_CHANNEL
+    description: "Default chat_id for cron / notification delivery"
+    prompt: "Home chat_id (or empty)"
+    password: false
+  - name: MAX_ALLOWED_USERS
+    description: "Comma-separated MAX user_ids allowed to talk to the bot (post-MVP)"
+    prompt: "Allowed user_ids (comma-separated)"
+    password: false
+  - name: MAX_ALLOW_ALL_USERS
+    description: "Allow any MAX user to talk to the bot (dev only)"
+    prompt: "Allow all users? (true/false)"
+    password: false

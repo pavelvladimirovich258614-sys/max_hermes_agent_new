@@ -1,0 +1,3 @@
+# MAX Hermes Agent plugin has no external dependencies beyond Hermes Agent itself.
+# The plugin uses only Python standard library + Hermes gateway internals.
+# Install Hermes Agent first: https://hermes-agent.nousresearch.com/docs

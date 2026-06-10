@@ -1,0 +1,11 @@
+flowchart LR
+    U[MAX User] --> M[MAX Bot API]
+    M --> A[MaxAdapter]
+    A --> G[Hermes Gateway Runner]
+    G --> R[Role Router]
+    R --> P[Profiles / SOUL.md]
+    G --> T[Tools / Skills / Browser / Terminal]
+    T --> G
+    G --> A
+    A --> M
+    M --> U
